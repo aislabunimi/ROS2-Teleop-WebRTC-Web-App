@@ -5,7 +5,7 @@
 4. Install Node.js version 16.x.
 5. Install the project with **npm install**. Puppeteer may show a error asking you to install chromium. If so, use the command that shows up (probabily sudo apt install chromium-browser)
 6. Edit the .env file with right values
-7. For executing the server use the command **node server.js**
+7. Run the server with the command **node server.js**
 ## Setting Up SROS2 Keystore
 1. **mkdir sros2_dir** (this command creates the directory where you are gonna create the keystore)
 2. **cd sros2_dir**
