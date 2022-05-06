@@ -2,8 +2,10 @@
 1. Install Ubuntu 20.04 Server into the Robot. If you want you can use the GUI version.
 2. Install ROS2 Galactic Geochelone (should also work with Foxy Fitzroy). Add to the bash the source command (**sudo nano ~/.bashrc**, insert at the end **source /opt/ros/[nome distribuzione ros]/setup.bash**)
 3. Download the repo
-4. Install with npm install. Puppeteer may show a error asking you to install chromium. If so, use the command that shows up (probabily sudo apt install chromium-browser)
-5. Edit the .env file with right values
+4. Install Node.js version 16.x.
+5. Install the project with **npm install**. Puppeteer may show a error asking you to install chromium. If so, use the command that shows up (probabily sudo apt install chromium-browser)
+6. Edit the .env file with right values
+7. For executing the server use the command **node server.js**
 ## Setting Up SROS2 Keystore
 1. **mkdir sros2_dir** (this command creates the directory where you are gonna create the keystore)
 2. **cd sros2_dir**
