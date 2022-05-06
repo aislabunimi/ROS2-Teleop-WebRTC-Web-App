@@ -60,6 +60,8 @@ You can also add these three commands to the bash.
 Because of WebRTC, the Local_server_teleop can be quite demanding in resources, especially the cpu.
 With the test, the raspberry pi 3 was not enough powerful to avoid lags in local network, while the raspberry pi 4 was enough.
 
+### SROS2 Errors
+
 > dq.builtin: Remote secure participant d740134c:e742c:51bas:1c13f not allowed
 
 Try to use again the source command. If it is still present, reboot the robot.
