@@ -1,0 +1,21 @@
+{
+  "name": "local_server_teleop",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3",
+    "puppeteer": "13.7.0",
+    "rclnodejs": "0.21.0",
+    "readline-sync": "^1.4.10",
+    "socket.io": "^4.4.1"
+  }
+}

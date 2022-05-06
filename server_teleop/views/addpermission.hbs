@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <title>Add User permissions</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="/stylesheets/style.css" rel="stylesheet" />
+  </head>
+  <body>
+  <form method="post">
+      <p> Aggiungi permessi utente </p>
+      <p>Username:</p>
+      <input id="username" type="text" name="username" placeholder="Username" required><br><br>
+      <p>Robotid:</p>
+      <input id="robotid" type="text" name="robotid" placeholder="Robotid" required>
+      <br><br>
+      <input id="buttonlogin" type="submit" value="Aggiungi permesso">
+      <p>{{ result }}</p>
+  </form>
+  
+  <br><br>
+  <a href="/admin" class="adminlinks">Torna alla pagina principale</a>
+  <br><br>
+  <form method="post" action="/logout">
+       <button type="submit" id="linkbuttonlogout">
+        Logout
+      </button>
+     </form>
+
+ 
+  </body>
+</html>
+
+

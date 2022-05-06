@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Broadcaster room</title>
+  </head>
+  <body>
+
+    <p id="stun_url" style="display: none;">{{stun_url}}</p>
+    <p id="turn_url" style="display: none;">{{turn_url}}</p>
+    <p id="turn_username" style="display: none;">{{turn_username}}</p>
+    <p id="turn_password" style="display: none;">{{turn_password}}</p>
+    <p id="robotport" style="display: none;">{{robotport}}</p>
+
+    <section class="select">
+      <label for="audioSource">Audio source: </label>
+      <select id="audioSource"></select>
+    </section>
+
+    <section class="select">
+      <label for="videoSource">Video source: </label>
+      <select id="videoSource"></select>
+    </section>
+
+    <form method="post" action="/logout">
+       <button type="submit" id="linkbuttonlogout">
+        Logout
+      </button>
+     </form>
+
+    <video playsinline autoplay muted></video>
+    <p id="roomname">{{roomname}}</p>
+    
+    <!-- importo sia socket.io che broadcast.js per streammare la cam del robot-->
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/private/javascripts/broadcast.js"></script>
+    <script src="/javascripts/teleopbroadcaster.js"></script>
+    <script src="/javascripts/adapter.js"></script>
+    <!-- adapter.js serve per rendere più compatibile webrtc con vari browser-->
+  </body>
+</html>
+
+
+

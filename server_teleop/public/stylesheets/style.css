@@ -1,0 +1,105 @@
+video { 
+  display: block;
+  margin: auto;
+  object-fit: cover;
+}
+
+p {
+  font-size: 20px;
+}
+
+span {
+  font-size: 20px;
+}
+
+body { /* Colore body */
+  color: white;
+  background-color: #414647;
+  text-align: center;
+}
+
+#main{
+  height: 100%;
+  position: relative;
+ 
+}
+
+#zone_joystick{ /* Per il joystick */
+  display: block;
+  position: relative;
+  width: 99%;
+}
+
+#listarobot { 
+  text-align: center; 
+  text-decoration: underline;
+  margin-top: 15px;
+  display: inline-block;
+  width: fit-content;
+}
+
+a {
+  text-decoration: none;
+  color: white;
+  display: block;
+  font-size: 25px;
+}
+
+#linklist {
+  display: block;
+  border-radius: 15px;
+  margin-top: 20px; 
+  font-size: 20px;
+  text-align: left;
+  text-decoration: underline;
+  width: fit-content;
+}
+
+#linklogout {
+  display: block;
+  color: red;
+  border-radius: 15px;
+  margin-top: 20px;
+  font-size: 20px;
+  text-align: left;
+  text-decoration: underline;
+}
+
+button { /* Per tutti i bottoni in generale*/  
+  display: inline-block;
+  background-color: #f44336;
+  border: none;
+  color: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+  padding: 15px 32px;
+  font-size: 15px;
+  width: fit-content;
+  cursor: pointer;
+}
+
+input {
+  color: #f44336;
+  font-size: 20px;
+}
+
+#buttonlogin{
+  background-color: #f44336;
+  border: none;
+  border-radius: 12px;
+  color: white;
+  font-size: 15px;
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+  padding: 15px 32px;
+  width: fit-content;
+  cursor: pointer;
+}
+
+.adminlinks{
+  margin-top: 15px;
+  display: inline-block;
+  text-align: center;
+  text-decoration: underline;
+  width: fit-content;
+}
+

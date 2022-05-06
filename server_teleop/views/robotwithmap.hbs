@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Teleop robot</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/style.css"  />
+  </head>
+  <body>
+    <div id="main">
+
+    <p id="stun_url" style="display: none;">{{stun_url}}</p>
+    <p id="turn_url" style="display: none;">{{turn_url}}</p>
+    <p id="turn_username" style="display: none;">{{turn_username}}</p>
+    <p id="turn_password" style="display: none;">{{turn_password}}</p>
+
+    <span>Per muovere il robot usa l'analogico, i tasi WASD, le freccette direzionali o un controller. </br>
+    Sotto al video c'è la mappa. La parte bianca indica zona non ancora esplorata; grigia chiaro invece la zona esplorata. La gradazione di grigio chiaro più scura indica che la zona non è stata esplorata bene; quando invece è più chiaro, la zona è stata esplorata correttamente.
+    Le linee nere, i puntini azzurri, blu, gialli, rossi indicano invece gli ostacoli. </br> 
+    Per vedere il video affianco la mappa, clicca l'icona per Picture-in-Picture (su Google Chrome tasto destro sul video) </br>
+    </span>
+    
+    <span id="waitingconn" style="font-size: 40px">Aspettando ricezione video, non teleoperare il robot! </br></span>
+    </br>
+    <button id="enable-audio">Abilita audio</button>
+    <span id="batterypercentage" style="color: red; margin-left: 200px"></span>
+    <video playsinline autoplay muted width="1280" height="720"></video>
+    
+    
+
+    <p id="roomname" style="display: none;">{{roomname}}</p>
+    <p id="max_linear" style="display: none;">{{max_linear}}</p>
+    <p id="max_angular" style="display: none;">{{max_angular}}</p>
+    <p id="max_distance" style="display: none;">{{max_distance}}</p>
+    <p id="speedlimiter" style="display: none;">{{speedlimiter}}</p>
+    
+    <a href="/robotlist" id="linklist">Torna alla lista dei robot</a>
+
+    <form method="post" action="/logout">
+       <button type="submit" id="linkbuttonlogout" style="position: absolute; left: 0; margin-top:20px">
+        Logout
+      </button>
+    </form>
+     
+    </div>
+    
+    <div id="zone_joystick"></div>
+    
+    <canvas id="mapimage" style="display:none">Your browser doesn't support html5</canvas>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    
+    <span id="scalinginstructions"> Inserisci il fattore di scaling per ingradire (valore maggiore di 1) o rimpicciolire la mappa (valore minore di 1) </span> <br/>
+    
+    <p id="waitingmap"></p>
+    
+    <p id="savemapresult"></p>
+    
+     <input id="scalefactor" type="number" name="scalefactor" placeholder="Scaling" min="0" max="50" value="10" style="width: 5em" required> </input>
+     <button id="savebutton">Salva mappa</button>
+    <br/>
+    <canvas id="scaledmap" style="border:2px solid red; background-color: #bfc9c9">Your browser doesn't support html5</canvas>
+
+   
+    <!--Importo socket.io per le socket, nipplejs per il controller, teleop per mandare i segnali di nipplejs al socket, watch per ricevere streaming webrtc -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/javascripts/nipplejs.js"></script>
+    <script src="/javascripts/teleopclient.js"></script>
+    <script src="/private/javascripts/watch.js"></script>
+    <script src="/javascripts/adapter.js"></script>
+    <script src="/javascripts/mapbattery.js"></script>
+     <!-- adapter.js serve per rendere più compatibile webrtc con vari browser-->
+  </body>
+</html>
+
+
+

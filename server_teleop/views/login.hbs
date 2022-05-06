@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <title>Login</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="/stylesheets/style.css" rel="stylesheet" />
+  </head>
+  <body>
+  <form method="post">
+      <!-- user input, il nome dell'utente con il token csrf nascosto insieme, e poi la password-->
+      <input type="hidden" name="_csrf" value='{{csrfToken}}'>
+      <p>Username:</p>
+      <input id="username" type="text" name="username" placeholder="Username" required><br><br>
+      <p>Password:</p>
+      <input id="password" type="password" name="password" placeholder="Password" required><br><br>
+      <!-- submit button -->
+      <input id="buttonlogin" type="submit" value="Login">
+      <p id="loginerror">{{ error }}</p> <!--error esiste a seguito di un flash per autenticazione fallita -->
+  </form>
+  </body>
+</html>
+

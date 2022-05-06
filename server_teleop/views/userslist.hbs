@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <title>User permissions</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="/stylesheets/style.css" rel="stylesheet" />
+  </head>
+  <body> 
+    <p> Lista utenti registrati: </p>
+      <p>{{ result }}</p>
+  <br><br>
+  <a href="/admin" class="adminlinks">Torna alla pagina principale</a>
+  <br><br>
+  <form method="post" action="/logout">
+       <button type="submit" id="linkbuttonlogout">
+        Logout
+      </button>
+     </form>
+
+       
+  </body>
+</html>
+
+

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Teleop robot</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/style.css"  />
+  </head>
+  <body>
+    <div id="main">
+    <p>Per muovere il robot usa l'analogico, i tasi WASD, le freccette direzionali o un controller</p>
+    <p id="waitingconn">Aspettando ricezione video, non teleoperare il robot!</p>
+    <video playsinline autoplay muted width="1280" height="720"></video>
+    <br/>
+    <button id="enable-audio">Abilita audio</button>
+
+    <p id="roomname" style="display: none;">{{roomname}}</p>
+    <p id="max_linear" style="display: none;">{{max_linear}}</p>
+    <p id="max_angular" style="display: none;">{{max_angular}}</p>
+    <p id="max_distance" style="display: none;">{{max_distance}}</p>
+    <p id="speedlimiter" style="display: none;">{{speedlimiter}}</p>
+    
+    <a href="/robotlist" id="linklist">Torna alla lista dei robot</a>
+
+    <span id="logout"><a href="/logout" id="linklogout">Logout</a></span>
+    
+    </div>
+    
+    <div id="zone_joystick"></div>
+
+   
+    <!--Importo socket.io per le socket, nipplejs per il controller, teleop per mandare i segnali di nipplejs al socket, watch per ricevere streaming webrtc -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/javascripts/nipplejs.js"></script>
+    <script src="/javascripts/teleopnipple.js"></script>
+    <script src="/javascripts/teleopkeyboard.js"></script>
+    <script src="/javascripts/teleopgamepad.js"></script>
+    <script src="/javascripts/watch.js"></script>
+    <script src="/javascripts/adapter.js"></script>
+     <!-- adapter.js serve per rendere più compatibile webrtc con vari browser-->
+  </body>
+</html>
+
+
+

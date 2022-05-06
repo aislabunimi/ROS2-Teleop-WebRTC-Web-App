@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Robot List</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/stylesheets/style.css" rel="stylesheet" />
+    
+  </head>
+  <body>
+     <div id="main">
+     <h1>Lista robot </h1>
+     <p id="robotlist" style="display:  none;">{{robotlist}}</p>
+     <h3> Clicca su uno dei link per collegarti! </h3>
+     <div id="listarobot"> </div>
+     <br>
+     <a href="/admin" class="adminlinks">Torna alla pagina di admin</a>
+     <br><br>
+     <form method="post" action="/logout">
+       <button type="submit" id="linkbuttonlogout">
+        Logout
+      </button>
+     </form>
+     </div>
+     <!--Importo script che si occupa di inserire nella pagina i robot a cui ho accesso -->
+     <script type="text/javascript" src="/javascripts/robotlistid.js"></script>    
+  </body>
+</html>
+
+
+
