@@ -32,6 +32,8 @@ With SROS2 you can make nodes speak to each other with private encrypted channel
 - Teleoperation of the robot
 - Send to the User the remaining Battery and the Map (you can also request the robot to save it)
 
+![Diagram](/diagram.png)
+
 ## ROS Technologies
 For interacting with the ROS system the user uses only Rclnodejs by Robot Web Tools.  
 ROSbridge was not used because of two reasons: 
