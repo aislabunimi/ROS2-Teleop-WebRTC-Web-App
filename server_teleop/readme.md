@@ -17,7 +17,7 @@ The document schema is the following:
 
 The username of the robot **MUST** be equivalent to his robotid. The robotid **MUST** be in the form of one of the ROBOTX_MODEL.  
 For example, if ROBOT1_MODEL=turtlebot3, the robotids must be in the form of turtlebot3_1, turtlebot3_2, turtlebot3_asd...  
-If you don't follow this rules the application won't work. Also users must not contain spaces, $, {, } and HTML escaping characters (they are filtered).
+If you don't follow this rules the application won't work. Also usernames, passwords and robotids must not contain spaces, $, {, }, &, <, >, " and ' .
 
 ## Before putting the Server on a public IP
 Remember to delete the line  ``` --ignore-certificate-errors ``` in the Local_Server_Teleop. If you do this you'll need to use valid certificates in the Server_Teleop.
