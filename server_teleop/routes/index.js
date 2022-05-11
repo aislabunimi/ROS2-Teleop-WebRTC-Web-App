@@ -11,9 +11,9 @@ const csrfProtection = csrf({cookie: false}); //cookie false perché i cookie me
 
 const { check, validationResult, param } = require('express-validator'); //chiamo modulo per validare e sanificare input utente
 const loginValidate = [ //qui valido e sanitizzo input del form di login
-  // Controllo username e password, vedendo se è stringa, compreso fra certa lunghezza, e poi tolgo spazi e $, e faccio escaping caratteri HTML
-  check('username').isString().isLength({ min:2, max: 30 }).trim().escape().blacklist('$'),
-  check('password').isString().isLength({ min:2, max: 30 }).trim().escape().blacklist('$'),
+  // Controllo username e password, vedendo se è stringa, compreso fra certa lunghezza, e poi tolgo spazi, $, graffe, e faccio escaping caratteri HTML
+  check('username').isString().isLength({ min:2, max: 30 }).trim().escape().blacklist('$').blacklist('{').blacklist('}'),
+  check('password').isString().isLength({ min:2, max: 30 }).trim().escape().blacklist('$').blacklist('{').blacklist('}'),
   (req, res, next) => {
     let errors = validationResult(req); //salvo errori
     if (!errors.isEmpty()){ //se ci sono errori ritorna errore
@@ -24,7 +24,7 @@ const loginValidate = [ //qui valido e sanitizzo input del form di login
   ];
 
 const paramValidate = [ //qui valido e sanitizzo parametro robot id
-  param("robot").isString().isLength({ min:2, max: 30 }).trim().escape().blacklist('$'),
+  param("robot").isString().isLength({ min:2, max: 30 }).trim().escape().blacklist('$').blacklist('{').blacklist('}'),
   (req, res, next) => {
     let errors = validationResult(req);
     if (!errors.isEmpty()){
