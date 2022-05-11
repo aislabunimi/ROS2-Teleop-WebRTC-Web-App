@@ -8,7 +8,7 @@ by using the command  ``` sudo nano ~/.bashrc  ``` and insert at the end of the 
 4. Install Node.js version 16.x.
 5. Install the project with ```npm install ```. Puppeteer may show a error asking you to install chromium. If so, use the command that shows up (probabily  ``` sudo apt install chromium-browser  ```)
 7. Edit the .env file with right values
-8. Run the server with the command:  ``` node server.js  ```
+8. Run the server with the command:  ``` node server.js  ```. After you run it you need to type Username and Password of the robot (the robot must be registered in the Server Teleop). You'll see a Auth Ok message.
 
 ## Setting Up SROS2 Keystore
 
