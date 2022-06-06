@@ -1,5 +1,4 @@
-# tesi.triennale.alberti - ROS2 Teleop Webapp
-ROS2 Secure Teleoperation Web App.  
+# ROS2 Teleop WebRTC Web App
 ## Description
 This project lets you teleop a ROS2 robot in the same network or across the Internet using the WebRTC API for the video streaming.  
 The App consists of two Node.js servers: 
@@ -35,7 +34,7 @@ With SROS2 you can make nodes speak to each other with private encrypted channel
 ![Diagram](/diagram.png)
 
 ## ROS Technologies
-For interacting with the ROS system the user uses only Rclnodejs by Robot Web Tools.  
+For interacting with the ROS system the user uses only [rclnodejs](https://github.com/RobotWebTools/rclnodejs) by Robot Web Tools .  
 ROSbridge was not used because of two reasons: 
 - It is hard to test the security of that tool (see also [this](https://github.com/RobotWebTools/rosbridge_suite/issues/570))
 - With ROSbridge the client has full access of the robot (via Javascript).
