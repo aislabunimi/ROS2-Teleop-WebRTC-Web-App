@@ -38,8 +38,14 @@ const { exec } = require('child_process'); //richiedo per salvare la mappa
 io.on('connection', socket => { //quando avviene una connessione, ascolto solo per due eventi. 
   // Qui non mi interessa verificare room del socket perché essendo solo su Localhost solo il client guidato da puppeteer può connettersi.
     socket.on("speedecho", (speedlinear, speedangular) => {
-      linear = speedlinear, angular = speedangular;
+      if(isNaN(speedlinear) || isNaN(speedangular)){
+        console.log("input malformato");
+      }
+      else
+      {
+       linear = speedlinear, angular = speedangular;
       console.log("linear: %s, angular: %s", linear, angular);
+      }
     });
     
     socket.on("savemapecho", () => {
