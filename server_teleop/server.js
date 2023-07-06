@@ -20,11 +20,11 @@ app.use(connectflash());
 
 // per limitare connessioni al server (anti DoS)
 const rateLimit = require('express-rate-limit'); 
-const limiter = rateLimit({ //impostazioni semi-standard che poi verificherò
+const limiter = rateLimit({
   windowMs: Number(process.env.LIMIT_TIME), // limite millisecondi, 10 minuti
   max: Number(process.env.LIMIT_IP_REQUEST), // Ogni IP può fare solo max richieste per window
-  standardHeaders: true, // Ritorna informazioni del rate limit nell'header RateLimit
-  legacyHeaders: false, // Disabilita l'header X-RateLimit-*
+  standardHeaders: false, // Ritorna informazioni del rate limit nell'header RateLimit
+  legacyHeaders: false, // Abilita l'header X-RateLimit-*
 });
 app.use(limiter); //uso il limitatore di richieste appena impostato
 
@@ -52,7 +52,10 @@ const server = https.createServer(options, app); //creo il server con le opzioni
 // app.set('trust proxy', 1) // trust first proxy nel caso in cui il server sarà dietro a proxy, va abilitato
 const sessionMiddleware = session({ //creo la sessione di express-session
   secret: process.env.COOKIE_SECRET, //segreto della sessione
-  store: MongoStore.create({ mongoUrl: process.env.MONGODB_URL }), //URL dove si trova il database MONGODB
+  store: MongoStore.create({ mongoUrl: process.env.MONGODB_URL,
+    autoRemove: 'interval',
+    autoRemoveInterval: Number(process.env.REMOVE_EXPIRED_SESSIONS) // In minutes 
+    }), //URL dove si trova il database MONGODB
   name: 'sessionId', //nome del cookie
   resave: false, //non salvare la sessione se non è stata modificata
   saveUninitialized: false, // non creare la sessione finché non viene memorizzato qualcosa
