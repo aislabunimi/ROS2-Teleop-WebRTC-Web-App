@@ -10,25 +10,36 @@ const csrfProtection = csrf({cookie: false}); //cookie false perché i cookie me
 //router.use(csrfProtection); //questo non devo farlo altrimenti alla prima POST il server del robot da CSRF token non valido
 
 const { check, validationResult, param } = require('express-validator'); //chiamo modulo per validare e sanificare input utente
+const createDOMPurify = require('dompurify');
+const { JSDOM } = require('jsdom');
+
+const xssSanitize = (value) => {
+    const window = new JSDOM('').window;
+    const DOMPurify = createDOMPurify(window);
+    return DOMPurify.sanitize(value, { ALLOWED_TAGS: [] });
+}
+
 const loginValidate = [ //qui valido e sanitizzo input del form di login
-  // Controllo username e password, vedendo se è stringa, compreso fra certa lunghezza, e poi tolgo spazi, $, graffe, e faccio escaping caratteri HTML
-  check('username').isString().isLength({ min:2, max: 30 }).trim().escape().blacklist('$').blacklist('{').blacklist('}'),
-  check('password').isString().isLength({ min:2, max: 30 }).trim().escape().blacklist('$').blacklist('{').blacklist('}'),
+  // Sanitizzo da XSS, Vedo se è stringa, la lunghezza, tolgo spazi, $, graffe, e faccio escaping caratteri HTML, poi solo quelli secondo espressione regolare
+  check('username').customSanitizer(xssSanitize).isString().isLength({ min:4, max: 30 }).trim().escape().matches(/^[A-Za-z0-9 .,'!&_]+$/),
+  check('password').customSanitizer(xssSanitize).isString().isLength({ min:4, max: 30 }).trim().escape().matches(/^[A-Za-z0-9 .,'!&_]+$/),
   (req, res, next) => {
     let errors = validationResult(req); //salvo errori
     if (!errors.isEmpty()){ //se ci sono errori ritorna errore
-      return res.status(422).json({errors: errors.array()});
+      return res.render('login', {error: "Password or username is incorrect"});
+      //return res.status(422).json({errors: errors.array()});
     }
     next(); //se no prosegui con prossimo middleware, cioè vai a fare autenticazione passport
    }
   ];
 
 const paramValidate = [ //qui valido e sanitizzo parametro robot id
-  param("robot").isString().isLength({ min:2, max: 30 }).trim().escape().blacklist('$').blacklist('{').blacklist('}'),
+  param("robot").customSanitizer(xssSanitize).isString().isLength({ min:4, max: 30 }).trim().escape().matches(/^[A-Za-z0-9 .,'!&_]+$/),
   (req, res, next) => {
     let errors = validationResult(req);
     if (!errors.isEmpty()){
-      return res.status(422).json({errors: errors.array()});
+      return res.redirect('/robotlist');
+      //return res.status(422).json({errors: errors.array()});
     }
     next();
    }
@@ -74,8 +85,7 @@ router.get('/teleop/:robot', paramValidate, connectEnsureLogin.ensureLoggedIn(),
          return res.render('robotwithmap', { roomname: req.params.robot, max_linear: Number(eval('process.env.ROBOT'+i+'_MAX_LINEAR')), max_angular: Number(eval('process.env.ROBOT'+i+'_MAX_ANGULAR')), max_distance: Number(eval('process.env.ROBOT'+i+'_MAX_DISTANCE')), speedlimiter: Number(eval('process.env.ROBOT'+i+'_SPEEDLIMITER')), stun_url: process.env.STUN_URLS, turn_url: '', turn_username: ' ', turn_password: ' '});
       }
     }
-    res.redirect('/robotlist');
-    
+    res.redirect('/robotlist');   
   }
   else{ //se no rimando a robotlist
   res.redirect('/robotlist');
@@ -84,7 +94,7 @@ router.get('/teleop/:robot', paramValidate, connectEnsureLogin.ensureLoggedIn(),
 
 //Questo metodo gestisce la richiesta di login tramite POST. Prima controllo credenziali con loginvalidate, poi csrf token, infine chiamo passport per autenticare; se fallisce rimando a login e mostro errore flash
 router.post('/login', loginValidate, csrfProtection, passport.authenticate('userlocal', { failureRedirect: '/login', failureFlash: true }),  function(req, res) {
-  // console.log(req.user) //req.user è sicuro perché non è inviato dal client ma salvato solo nel server!
+  // console.log(req.user) //req.user è sicuro perché non è inviato dal client ma salvato solo nel server, è il risultato di passport che dopo aver autenticato un utente genera questo oggetto e lo salva nel db per accedervi alle proprietà facilmente!
   if(req.user.group === 'user') return res.redirect('/robotlist'); //quando l'utente è autenticato viene redirezionato alla lista robot
   if(req.user.group === 'admin') return res.redirect('/admin');
   //ALLORA è un ROBOT
@@ -117,34 +127,34 @@ router.get('/admin', connectEnsureLogin.ensureLoggedIn(), function(req, res, nex
   res.render('admin');
 });
 
-router.get('/register', connectEnsureLogin.ensureLoggedIn(), function(req, res, next) {
+router.get('/register', csrfProtection, connectEnsureLogin.ensureLoggedIn(), function(req, res, next) {
   if(req.user.group !== 'admin') return res.redirect('/login');
   res.render('register');
 });
 
-router.get('/deleteuser', connectEnsureLogin.ensureLoggedIn(), function(req, res, next) {
+router.get('/deleteuser', csrfProtection, connectEnsureLogin.ensureLoggedIn(), function(req, res, next) {
   if(req.user.group !== 'admin') return res.redirect('/login');
   res.render('deleteuser');
 });
 
-router.get('/viewpermissions', connectEnsureLogin.ensureLoggedIn(), function(req, res, next) {
+router.get('/viewpermissions', csrfProtection, connectEnsureLogin.ensureLoggedIn(), function(req, res, next) {
   if(req.user.group !== 'admin') return res.redirect('/login');
   res.render('viewpermissions');
 });
 
-router.get('/addpermission', connectEnsureLogin.ensureLoggedIn(), function(req, res, next) {
+router.get('/addpermission', csrfProtection, connectEnsureLogin.ensureLoggedIn(), function(req, res, next) {
   if(req.user.group !== 'admin') return res.redirect('/login');
   res.render('addpermission');
 });
 
-router.get('/removepermission', connectEnsureLogin.ensureLoggedIn(), function(req, res, next) {
+router.get('/removepermission', csrfProtection, connectEnsureLogin.ensureLoggedIn(), function(req, res, next) {
   if(req.user.group !== 'admin') return res.redirect('/login');
   res.render('removepermission');
 });
 
 const UserDetails = require('../models/user');
 
-router.post('/register', connectEnsureLogin.ensureLoggedIn(), function(req, res, next) {
+router.post('/register', csrfProtection, connectEnsureLogin.ensureLoggedIn(), function(req, res, next) {
   if(req.user.group !== 'admin') return res.redirect('/login');
   UserDetails.register({ username: req.body.username, group: req.body.group, robotids : [ 
     {
@@ -159,7 +169,7 @@ router.post('/register', connectEnsureLogin.ensureLoggedIn(), function(req, res,
     });
 });
 
-router.post('/deleteuser', connectEnsureLogin.ensureLoggedIn(), function(req, res, next) {
+router.post('/deleteuser', csrfProtection, connectEnsureLogin.ensureLoggedIn(), function(req, res, next) {
   if(req.user.group !== 'admin') return res.redirect('/login');
   UserDetails.findOne({
     username: req.body.username
@@ -188,7 +198,7 @@ router.post('/deleteuser', connectEnsureLogin.ensureLoggedIn(), function(req, re
   });
 });
 
-router.post('/viewpermissions', connectEnsureLogin.ensureLoggedIn(), function(req, res, next) {
+router.post('/viewpermissions', csrfProtection, connectEnsureLogin.ensureLoggedIn(), function(req, res, next) {
   if(req.user.group !== 'admin') return res.redirect('/login');
   UserDetails.findOne({
     username: req.body.username
@@ -218,7 +228,7 @@ router.post('/viewpermissions', connectEnsureLogin.ensureLoggedIn(), function(re
   });
 });
 
-router.post('/addpermission', connectEnsureLogin.ensureLoggedIn(), function(req, res, next) {
+router.post('/addpermission', csrfProtection, connectEnsureLogin.ensureLoggedIn(), function(req, res, next) {
   if(req.user.group !== 'admin') return res.redirect('/login');
   let robid = { robotid: req.body.robotid};
   UserDetails.findOne(
@@ -249,7 +259,7 @@ router.post('/addpermission', connectEnsureLogin.ensureLoggedIn(), function(req,
   });
 });
 
-router.post('/removepermission', connectEnsureLogin.ensureLoggedIn(), function(req, res, next) {
+router.post('/removepermission', csrfProtection, connectEnsureLogin.ensureLoggedIn(), function(req, res, next) {
   if(req.user.group !== 'admin') return res.redirect('/login');
   let robid = { robotid: req.body.robotid};
   UserDetails.findOne(
