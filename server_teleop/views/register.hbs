@@ -10,6 +10,7 @@
   <form method="post">
       <!-- user input, il nome dell'utente con il token csrf nascosto insieme, e poi la password-->
       <p> Registra nuovo utente </p>
+      <input type="hidden" name="_csrf" value='{{csrfToken}}'>
       <p>Username:</p>
       <input id="username" type="text" name="username" placeholder="Username" required><br><br>
       <p>Group:</p>
