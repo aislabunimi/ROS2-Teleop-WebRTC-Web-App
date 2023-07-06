@@ -14,21 +14,18 @@ UserDetails.register({ username: 'admin', group: 'admin', active: false }, 'admi
     }
     });
 
-//esempio di come registrare un utente e un robot, copia e incolla sopra dopo la prima { e lascia la function
-//how to register a user and a robot , copy and paste after the first { and leave the function
-/*
-username: 'test', group: 'user', robotids : [ 
+//esempio di come registrare un utente e un robot 
+UserDetails.register({ username: 'user', group: 'user', robotids : [ 
     {
-    robotid : "robot1"
+    robotid : "turtlebot3_1"
     },
     {
-    robotid : "robot2"
+    robotid : "turtlebot3_2"
     }	
-      ], active: false }, 'test', 
+      ], active: false }, 'user');
 
-username: 'robot1test', group: 'robot', robotids : [ 
+UserDetails.register({ username: 'turtlebot3_1', group: 'robot', robotids : [ 
     {
-    robotid : "robot1"
+    robotid : "turtlebot3_1"
     },
-      ], active: false }, 'robot1test', 
-*/
+      ], active: false }, 'turtlebot3_1');
