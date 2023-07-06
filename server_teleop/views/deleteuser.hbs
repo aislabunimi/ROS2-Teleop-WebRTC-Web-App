@@ -10,6 +10,7 @@
   <form method="post">
       <p> Elimina utente </p>
       <p>Username:</p>
+      <input type="hidden" name="_csrf" value='{{csrfToken}}'>
       <input id="username" type="text" name="username" placeholder="Username" required><br><br>
       <input id="buttonlogin" type="submit" value="Elimina utente">
       <p>{{ result }}</p>
