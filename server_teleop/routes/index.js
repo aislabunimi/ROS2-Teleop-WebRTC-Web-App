@@ -1,3 +1,4 @@
+require('dotenv').config(); //richiedo variabili settate nel file .env
 const express = require('express');
 const router = express.Router(); //oggetto router
 const passport = require('passport'); //per l'autenticazione
@@ -21,8 +22,8 @@ const xssSanitize = (value) => {
 
 const loginValidate = [ //qui valido e sanitizzo input del form di login
   // Sanitizzo da XSS, Vedo se è stringa, la lunghezza, tolgo spazi, $, graffe, e faccio escaping caratteri HTML, poi solo quelli secondo espressione regolare
-  check('username').customSanitizer(xssSanitize).isString().isLength({ min:4, max: 30 }).trim().escape().matches(/^[A-Za-z0-9 .,'!&_]+$/),
-  check('password').customSanitizer(xssSanitize).isString().isLength({ min:4, max: 30 }).trim().escape().matches(/^[A-Za-z0-9 .,'!&_]+$/),
+  check('username').customSanitizer(xssSanitize).isString().isLength({ min: Number(process.env.MIN_LENGTH_USER_FIELD), max: Number(process.env.MAX_LENGTH_USER_FIELD)}).trim().escape().matches(/^[A-Za-z0-9 .,'!&_]+$/),
+  check('password').customSanitizer(xssSanitize).isString().isLength({ min: Number(process.env.MIN_LENGTH_PW_FIELD), max: Number(process.env.MAX_LENGTH_PW_FIELD)}).trim().escape().matches(/^[A-Za-z0-9 .,'!&_]+$/),
   (req, res, next) => {
     let errors = validationResult(req); //salvo errori
     if (!errors.isEmpty()){ //se ci sono errori ritorna errore
@@ -34,7 +35,7 @@ const loginValidate = [ //qui valido e sanitizzo input del form di login
   ];
 
 const paramValidate = [ //qui valido e sanitizzo parametro robot id
-  param("robot").customSanitizer(xssSanitize).isString().isLength({ min:4, max: 30 }).trim().escape().matches(/^[A-Za-z0-9 .,'!&_]+$/),
+  param("robot").customSanitizer(xssSanitize).isString().isLength({ min: Number(process.env.MIN_LENGTH_PARAM_ROBOT), max: Number(process.env.MAX_LENGTH_PARAM_ROBOT)}).trim().escape().matches(/^[A-Za-z0-9 .,'!&_]+$/),
   (req, res, next) => {
     let errors = validationResult(req);
     if (!errors.isEmpty()){
@@ -154,7 +155,24 @@ router.get('/removepermission', csrfProtection, connectEnsureLogin.ensureLoggedI
 
 const UserDetails = require('../models/user');
 
-router.post('/register', csrfProtection, connectEnsureLogin.ensureLoggedIn(), function(req, res, next) {
+const registerValidate = [ //qui valido e sanitizzo input del form di register
+  // Sanitizzo da XSS, Vedo se è stringa, la lunghezza, tolgo spazi, $, graffe, e faccio escaping caratteri HTML, poi solo quelli secondo espressione regolare
+  check('username').customSanitizer(xssSanitize).isString().isLength({ min: Number(process.env.MIN_LENGTH_USER_FIELD), max: Number(process.env.MAX_LENGTH_USER_FIELD)}).trim().escape().matches(/^[A-Za-z0-9 .,'!&_]+$/),
+  check('password').customSanitizer(xssSanitize).isString().isLength({ min: Number(process.env.MIN_LENGTH_PW_FIELD), max: Number(process.env.MAX_LENGTH_PW_FIELD)}).trim().escape().matches(/^[A-Za-z0-9 .,'!&_]+$/)
+  .not().isLowercase().not().isUppercase().not().isNumeric().not().isAlpha(), //verifico che non sia tutto minuscolo, tutto maiuscolo, non sia solo numeri e ne solo di caratteri qualsiasi
+  check('group').isIn(['user', 'admin', 'robot']), //verifico che il gruppo sia corretto
+  (req, res, next) => {
+    let errors = validationResult(req); //salvo errori
+    if (!errors.isEmpty()){ //se ci sono errori ritorna errore
+      return res.render("register", { result: "utente non soddisfa i requisiti minimi di lunghezza username "+process.env.MIN_LENGTH_USER_FIELD+" o i max "+process.env.MAX_LENGTH_USER_FIELD+
+        " oppure i minimi di password "+process.env.MIN_LENGTH_PW_FIELD+" o i max "+process.env.MAX_LENGTH_PW_FIELD+" oppure la password non contiene almeno una minuscola, una maiuscola e un numero; oppure sbagliato a digitare gruppo (deve essere user, admin o group)"});
+      //return res.status(422).json({errors: errors.array()});
+    }
+    next(); //se no prosegui con prossimo middleware
+   }
+  ];
+
+router.post('/register', registerValidate, csrfProtection, connectEnsureLogin.ensureLoggedIn(), function(req, res, next) {
   if(req.user.group !== 'admin') return res.redirect('/login');
   UserDetails.register({ username: req.body.username, group: req.body.group, robotids : [ 
     {
