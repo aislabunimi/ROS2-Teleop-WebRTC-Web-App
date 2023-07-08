@@ -187,7 +187,19 @@ router.post('/register', registerValidate, csrfProtection, connectEnsureLogin.en
     });
 });
 
-router.post('/deleteuser', csrfProtection, connectEnsureLogin.ensureLoggedIn(), function(req, res, next) {
+const deleteValidate = [ //qui valido e sanitizzo input del delete
+  check('username').customSanitizer(xssSanitize).isString().isLength({ min: Number(process.env.MIN_LENGTH_USER_FIELD), max: Number(process.env.MAX_LENGTH_USER_FIELD)}).trim().escape().matches(/^[A-Za-z0-9 .,'!&_]+$/),
+  (req, res, next) => {
+    let errors = validationResult(req); //salvo errori
+    if (!errors.isEmpty()){ //se ci sono errori ritorna errore
+      return res.render("deleteuser", { result: "nome utente non valido"});
+      //return res.status(422).json({errors: errors.array()});
+    }
+    next(); //se no prosegui con prossimo middleware
+   }
+  ];
+
+router.post('/deleteuser', deleteValidate, csrfProtection, connectEnsureLogin.ensureLoggedIn(), function(req, res, next) {
   if(req.user.group !== 'admin') return res.redirect('/login');
   UserDetails.findOne({
     username: req.body.username
@@ -216,7 +228,19 @@ router.post('/deleteuser', csrfProtection, connectEnsureLogin.ensureLoggedIn(), 
   });
 });
 
-router.post('/viewpermissions', csrfProtection, connectEnsureLogin.ensureLoggedIn(), function(req, res, next) {
+const viewpermissionValidate = [ //qui valido e sanitizzo input del delete
+  check('username').customSanitizer(xssSanitize).isString().isLength({ min: Number(process.env.MIN_LENGTH_USER_FIELD), max: Number(process.env.MAX_LENGTH_USER_FIELD)}).trim().escape().matches(/^[A-Za-z0-9 .,'!&_]+$/),
+  (req, res, next) => {
+    let errors = validationResult(req); //salvo errori
+    if (!errors.isEmpty()){ //se ci sono errori ritorna errore
+      return res.render("viewpermissions", { result: "nome utente non valido"});
+      //return res.status(422).json({errors: errors.array()});
+    }
+    next(); //se no prosegui con prossimo middleware
+   }
+  ];
+
+router.post('/viewpermissions', viewpermissionValidate, csrfProtection, connectEnsureLogin.ensureLoggedIn(), function(req, res, next) {
   if(req.user.group !== 'admin') return res.redirect('/login');
   UserDetails.findOne({
     username: req.body.username
@@ -246,7 +270,20 @@ router.post('/viewpermissions', csrfProtection, connectEnsureLogin.ensureLoggedI
   });
 });
 
-router.post('/addpermission', csrfProtection, connectEnsureLogin.ensureLoggedIn(), function(req, res, next) {
+const addpermissionValidate = [ //qui valido e sanitizzo input del delete
+  check('username').customSanitizer(xssSanitize).isString().isLength({ min: Number(process.env.MIN_LENGTH_USER_FIELD), max: Number(process.env.MAX_LENGTH_USER_FIELD)}).trim().escape().matches(/^[A-Za-z0-9 .,'!&_]+$/),
+  check('robotid').customSanitizer(xssSanitize).isString().isLength({ min: Number(process.env.MIN_LENGTH_USER_FIELD), max: Number(process.env.MAX_LENGTH_USER_FIELD)}).trim().escape().matches(/^[A-Za-z0-9 .,'!&_]+$/),
+  (req, res, next) => {
+    let errors = validationResult(req); //salvo errori
+    if (!errors.isEmpty()){ //se ci sono errori ritorna errore
+      return res.render("addpermission", { result: "nome utente o robotid non valido"});
+      //return res.status(422).json({errors: errors.array()});
+    }
+    next(); //se no prosegui con prossimo middleware
+   }
+  ];
+
+router.post('/addpermission', addpermissionValidate, csrfProtection, connectEnsureLogin.ensureLoggedIn(), function(req, res, next) {
   if(req.user.group !== 'admin') return res.redirect('/login');
   let robid = { robotid: req.body.robotid};
   UserDetails.findOne(
@@ -277,7 +314,20 @@ router.post('/addpermission', csrfProtection, connectEnsureLogin.ensureLoggedIn(
   });
 });
 
-router.post('/removepermission', csrfProtection, connectEnsureLogin.ensureLoggedIn(), function(req, res, next) {
+const removepermissionValidate = [ //qui valido e sanitizzo input del delete
+  check('username').customSanitizer(xssSanitize).isString().isLength({ min: Number(process.env.MIN_LENGTH_USER_FIELD), max: Number(process.env.MAX_LENGTH_USER_FIELD)}).trim().escape().matches(/^[A-Za-z0-9 .,'!&_]+$/),
+  check('robotid').customSanitizer(xssSanitize).isString().isLength({ min: Number(process.env.MIN_LENGTH_USER_FIELD), max: Number(process.env.MAX_LENGTH_USER_FIELD)}).trim().escape().matches(/^[A-Za-z0-9 .,'!&_]+$/),
+  (req, res, next) => {
+    let errors = validationResult(req); //salvo errori
+    if (!errors.isEmpty()){ //se ci sono errori ritorna errore
+      return res.render("removepermission", { result: "nome utente o robotid non valido"});
+      //return res.status(422).json({errors: errors.array()});
+    }
+    next(); //se no prosegui con prossimo middleware
+   }
+  ];
+
+router.post('/removepermission', removepermissionValidate, csrfProtection, connectEnsureLogin.ensureLoggedIn(), function(req, res, next) {
   if(req.user.group !== 'admin') return res.redirect('/login');
   let robid = { robotid: req.body.robotid};
   UserDetails.findOne(
